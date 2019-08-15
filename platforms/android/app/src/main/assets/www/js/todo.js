@@ -1,13 +1,17 @@
+
+
+
+//Show Current Date
 var options = {  weekday: 'long', month: 'long', day: 'numeric'};
 var prnDt = new Date().toLocaleDateString('en-us', options);
 document.getElementById("dateMonth").innerHTML = prnDt;
 
 
-var taskInput=document.getElementById("newToDo");//Add a new task.
+var taskInput=document.getElementById("taskInput");//Add a new task.
 var addButton=document.getElementsByTagName("button")[0];//first button
 var incompleteTaskHolder=document.getElementById("incomplete-tasks");//ul of #incomplete-tasks
 var completedTasksHolder=document.getElementById("completed-tasks");//completed-tasks
-var inputData = taskInput;
+var inputArray = [];
 
 //New task list item
 var createNewTaskElement=function(taskString){
@@ -53,12 +57,19 @@ var createNewTaskElement=function(taskString){
 
 var addTask=function(){
 	console.log("Add Task...");
-  //Create a new list item with the text from the #newToDo:
+  //Create a new list item with the text from the #taskInput:
+  saveToLocalStorage();
   if(taskInput.value === ""){
     alert("Can't enter blank field!");
+  }else if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+	  listItem=createNewTaskElement(taskInput.value);
+	  saveToLocalStorage();
+	    incompleteTaskHolder.appendChild(listItem);
+	    bindTaskEvents(listItem, taskCompleted);
   }else{
   var listItem=createNewTaskElement(taskInput.value);
-  /////////////////////////////////////////////////////////////////////////////////localStorage.setItem("toDoListData", taskInput.value);
   }
 	//Append listItem to incompleteTaskHolder
 	incompleteTaskHolder.appendChild(listItem);
@@ -67,13 +78,19 @@ var addTask=function(){
 	taskInput.value="";
 
 }
+//Set the enter key to Add New a Tasks
 
+var input = document.getElementById("taskInput")
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  
+});
 //Edit an existing task.
 
 var editTask=function(){
 console.log("Edit Task...");
 console.log("Change 'edit' to 'save'");
-
 
 var listItem=this.parentNode;
 
@@ -94,8 +111,34 @@ var containsClass=listItem.classList.contains("editMode");
 		listItem.classList.toggle("editMode");
 }
 
+//Save Data to Local Storage
+function saveToLocalStorage(){
+	inputArray.push(taskInput.value);
+	if(taskInput.value !== ""){
+		var str = JSON.stringify(inputArray);
+		localStorage.setItem("TodoList",str);
+	}
+}
+
+//Get Data from Local Storage
+
+window.onload = function(){
+	var list = localStorage.getItem('TodoList');
+
+	if(list != null){
+		inputArray = JSON.parse(list);
+		
+		for(var i=0; i<inputArray.length;i++){
+            var item = createNewTaskElement(inputArray[i]);
+			incompleteTaskHolder.appendChild(item);
+			bindTaskEvents(item, taskCompleted);
 
 
+			taskInput.value="";
+        }
+
+	}
+}
 
 //Delete task.
 var deleteTask=function(){
@@ -105,9 +148,20 @@ var deleteTask=function(){
 		var ul=listItem.parentNode;
 		//Remove the parent list item from the ul.
 		ul.removeChild(listItem);
-
+		for(var i =0; i < inputArray.length;i++){
+			if(inputArray[i]){
+				inputArray.splice(i,1);
+				updatedLocalStorage();
+				break;
+			}
+		}
 }
 
+var updatedLocalStorage = function(){
+    var todos = inputArray;
+    localStorage.removeItem('TodoList');
+    localStorage.setItem('TodoList', JSON.stringify(todos));
+}
 
 //Mark task completed
 var taskCompleted=function(){
@@ -165,7 +219,7 @@ var bindTaskEvents=function(taskListItem,checkBoxEventHandler){
 //cycle over incompleteTaskHolder ul list items
 	//for each list item
 	for (var i=0; i<incompleteTaskHolder.children.length;i++){
-
+		
 		//bind events to list items chldren(tasksCompleted)
 		bindTaskEvents(incompleteTaskHolder.children[i],taskCompleted);
 	}
@@ -179,23 +233,3 @@ var bindTaskEvents=function(taskListItem,checkBoxEventHandler){
 		bindTaskEvents(completedTasksHolder.children[i],taskIncomplete);
   }
 
-
-//Set the enter key to Add New a Tasks
-
-var input = document.getElementById("newToDo")
-// Execute a function when the user releases a key on the keyboard
-input.addEventListener("keyup", function(event) {
-  // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    // Cancel the default action, if needed
-    event.preventDefault();
-    if(taskInput.value === ""){
-      alert("Can't enter blank field!")
-    }else{
-      listItem=createNewTaskElement(taskInput.value);
-	    incompleteTaskHolder.appendChild(listItem);
-	    bindTaskEvents(listItem, taskCompleted);
-      taskInput.value="";
-    }
-  }
-});

@@ -13,6 +13,12 @@
     "cordova-plugin-camera": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
     }
   },
   "dependent_plugins": {}

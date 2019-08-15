@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Cross To-Do List</title>
+    <!--Link CSS files-->
+      <link rel="stylesheet" type="text/css" href="css/todo.css">   
+      <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+  </head>
+  <body>
+    
+    <div class="container">
+      <div class="brand-logo">
+        <!--<img for="brand-logo" id="brand-logo" src="img/logo1.png" style="align-self: center; height: 500px; width: 200px;"> -->
+      </div>
+      <div class="title">
+            <h4 for="title" id="title">Cross To-Do List</h4>
+          </div>
+      <div class="geolocation">
+        <h4 for="geolocation" id="geolocation"></h4>
+        
+<button id = "getPosition">CURRENT POSITION</button>
+<button id = "watchPosition">WATCH POSITION</button>
+
+      </div>
+      <div class="date">
+        <h4 for="dateMonth" id="dateMonth"></h4>
+      </div>
+      <p>
+        <h3 for='taskInput'>+ add new a tasks</h3>
+            <input id="taskInput" type="text" placeholder="New a tasks..."><button class="ui-btn ui-btn-b">Add New A Tasks</button>
+      </p>
+      
+      <h3>&#9776; To-Do Tasks</h3>
+      <ul id="incomplete-tasks">
+      </ul>
+      
+      <h3>&#10004; Completed Tasks</h3>
+      <ul id="completed-tasks">
+      </ul>
+    </div>
+
+    <!--Link JS files-->
+    <script type="text/javascript" src="js/todo.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>
+  </body>
+</html>
+
