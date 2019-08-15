@@ -1,6 +1,3 @@
-
-
-
 //Show Current Date
 var options = {  weekday: 'long', month: 'long', day: 'numeric'};
 var prnDt = new Date().toLocaleDateString('en-us', options);
@@ -8,7 +5,7 @@ document.getElementById("dateMonth").innerHTML = prnDt;
 
 
 var taskInput=document.getElementById("taskInput");//Add a new task.
-var addButton=document.getElementsByTagName("button")[0];//first button
+var addButton=document.getElementsByTagName("button")[1];//first button
 var incompleteTaskHolder=document.getElementById("incomplete-tasks");//ul of #incomplete-tasks
 var completedTasksHolder=document.getElementById("completed-tasks");//completed-tasks
 var inputArray = [];
@@ -132,9 +129,6 @@ window.onload = function(){
             var item = createNewTaskElement(inputArray[i]);
 			incompleteTaskHolder.appendChild(item);
 			bindTaskEvents(item, taskCompleted);
-
-
-			taskInput.value="";
         }
 
 	}
@@ -199,7 +193,6 @@ var ajaxRequest=function(){
 addButton.addEventListener("click",addTask);
 addButton.addEventListener("click",ajaxRequest);
 
-
 var bindTaskEvents=function(taskListItem,checkBoxEventHandler){
 	console.log("bind list item events");
 //select ListItems children
@@ -231,5 +224,55 @@ var bindTaskEvents=function(taskListItem,checkBoxEventHandler){
 	for (var i=0; i<completedTasksHolder.children.length;i++){
 	//bind events to list items chldren(tasksIncompleted)
 		bindTaskEvents(completedTasksHolder.children[i],taskIncomplete);
-  }
+  } 
+  
+
+//Show Current Location
+function getPosition() {
+	var options = {
+	   enableHighAccuracy: true,
+	   maximumAge: 3600000
+	}
+	var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+ 
+	function onSuccess(position) {
+	   alert('Latitude: '          + position.coords.latitude          + '\n' +
+		  'Longitude: '         + position.coords.longitude         + '\n' +
+		  'Altitude: '          + position.coords.altitude          + '\n' +
+		  'Accuracy: '          + position.coords.accuracy          + '\n' +
+		  'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+		  'Heading: '           + position.coords.heading           + '\n' +
+		  'Speed: '             + position.coords.speed             + '\n' +
+		  'Timestamp: '         + position.timestamp                + '\n');
+	};
+ 
+	function onError(error) {
+	   alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+	}
+ }
+ 
+ function watchPosition() {
+	var options = {
+	   maximumAge: 3600000,
+	   timeout: 3000,
+	   enableHighAccuracy: true,
+	}
+	var watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+ 
+	function onSuccess(position) {
+	   alert('Latitude: '          + position.coords.latitude          + '\n' +
+		  'Longitude: '         + position.coords.longitude         + '\n' +
+		  'Altitude: '          + position.coords.altitude          + '\n' +
+		  'Accuracy: '          + position.coords.accuracy          + '\n' +
+		  'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+		  'Heading: '           + position.coords.heading           + '\n' +
+		  'Speed: '             + position.coords.speed             + '\n' +
+		  'Timestamp: '         + position.timestamp                + '\n');
+	};
+ 
+	function onError(error) {
+	   alert('code: '    + error.code    + '\n' +'message: ' + error.message + '\n');
+	}
+ }
+ document.getElementById("getPosition").addEventListener("click", getPosition);
 
